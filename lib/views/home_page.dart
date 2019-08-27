@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _resetPlayers();
+    
   }
 
   void _resetPlayer({Player player, bool resetVictories = true}) {
