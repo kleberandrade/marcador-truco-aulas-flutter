@@ -8,6 +8,12 @@ Tutorial de criação deste app: http://bit.ly/2MDO6ww
     <img src="https://miro.medium.com/max/1440/1*UhBQQqZamLVMRhYtkKnhpA.png" width="800"/>
 </p>
 
+## Como clonar e importar
+
+-   Faça um fork do projeto
+-   Abra o terminal do Visual Studio Code
+-   Digite (troque kleberandrade pelo nome do seu usuários): git clone https://github.com/kleberandrade/marcador-truco-aulas-flutter.git marcador_truco
+
 ## Desafios
 
 - Não deixar que seja possível ficar com pontos negativos ao clicar em (-1) e também não pode ultrapassar 12 pontos.
