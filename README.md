@@ -1,87 +1,58 @@
-# Truco Scoreboard
+# Mesa de Truco · Truco Scoreboard
 
-[![Language: Dart](https://img.shields.io/badge/Language-Dart-0175C2)](https://github.com/kleberandrade/marcador-truco-aulas-flutter/blob/master/pubspec.yaml)
-[![Framework: Flutter](https://img.shields.io/badge/Framework-Flutter-02569B)](https://github.com/kleberandrade/marcador-truco-aulas-flutter/blob/master/pubspec.yaml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-555555)](https://github.com/kleberandrade/marcador-truco-aulas-flutter/blob/master/LICENSE)
+![Flutter 3.41.9](https://img.shields.io/badge/Flutter-3.41.9-02569B)
+![Dart 3.11.5](https://img.shields.io/badge/Dart-3.11.5-0175C2)
+[![MIT](https://img.shields.io/badge/license-MIT-555555)](LICENSE)
 
-Flutter classroom app for keeping score in Truco card games.
+An offline two-team scoreboard, originally created by Kleber de Oliveira Andrade for mobile programming classes. Portuguese interface, modern Flutter, no account or backend required.
 
-## Getting started
+## Run
 
-- Select a Flutter release whose bundled Dart SDK satisfies the manifest constraint, then run the commands below from the repository root.
+Verified with Flutter **3.41.9**, bundled Dart **3.11.5**, and Chrome on macOS. Do not use the original Dart 2 toolchain.
 
 ```sh
 flutter pub get
-flutter run
+flutter run -d chrome
 ```
 
-- If the app depends on Firebase or another external service, configure your own service project using the dependencies and original notes; credentials are not supplied by this guide.
+## Play
 
-## Recorded requirements
+- Tap a team name to rename it (1–24 trimmed characters).
+- Use +1 / −1 for manual scoring, bounded to 0–12.
+- At 12, confirm the victory: the winner gains one victory and both scores reset. Cancel returns the winner to 11. The confirmation cannot be dismissed by tapping outside or pressing Back.
+- New match resets points while keeping names and victories. Reset session clears points and victories after confirmation.
+- Names, points, victories and pending winner confirmation resume from this browser/device. Save errors are visible and offer retry. Browser storage can be cleared by the browser and is not a backup.
+- At 11–11 the interface reminds players to agree on iron-hand rules.
 
-- Dart SDK constraint from [`pubspec.yaml`](https://github.com/kleberandrade/marcador-truco-aulas-flutter/blob/master/pubspec.yaml): `>=2.1.0 <3.0.0`.
+This preserves the original tutorial's manual twelve-point game. It does **not** enforce Paulista, Mineiro or other regional card rules, bidding, hands, or online play. Add the agreed hand value by tapping +1 repeatedly. Always-on screen behavior remains an exercise.
 
-## Repository map
+Try a match locally: rename teams to Amigos/Visitantes, give them points, reload and check recovery. `docs/example-match.json` is a versioned fixture (11–8, 2–1 victories), usable with `Match.decode`; there is no import UI.
 
-- [lib](https://github.com/kleberandrade/marcador-truco-aulas-flutter/tree/master/lib)
-- [android](https://github.com/kleberandrade/marcador-truco-aulas-flutter/tree/master/android)
-- [ios](https://github.com/kleberandrade/marcador-truco-aulas-flutter/tree/master/ios)
+## Architecture and migration
 
-## Validation status
+`lib/domain/match.dart` owns immutable validated state and pure transitions. `lib/data/match_store.dart` isolates local storage. `TeamBoard` renders reusable team cards. `HomePage` owns interaction and serializes saves by disabling controls during writes; Material controls support keyboard focus and accessible semantics. Layout stacks cards on narrow screens and uses two columns from 650 logical pixels. Loading, invalid-save and save-error states are explicit.
 
-This update documents the tracked source and project metadata. It does not certify a successful build, device test or compatibility with a current toolchain. Follow any project-specific validation instructions in the original material.
+Original code stored everything in memory, so there are no persisted legacy records to migrate. New records use `truco.match.v1`, a single JSON snapshot with schema version 1. Unknown versions and malformed values are rejected without overwriting until a user explicitly saves/starts playing. Future schema changes must migrate this key and retain compatibility tests.
 
-## License and attribution
+Android and iOS scaffolds were regenerated from Flutter 3.41.9 templates, preserving the original `com.example.marcador_truco` application identity and launcher assets. These are classroom development identifiers; release signing is not configured. The MIT license and original authorship remain unchanged.
 
-See [LICENSE](https://github.com/kleberandrade/marcador-truco-aulas-flutter/blob/master/LICENSE) and any notices accompanying third-party code and assets. This documentation update does not change licensing or authorship.
+## Verification
 
----
+```sh
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test --coverage
+flutter build web --no-wasm-dry-run
+```
 
-## Original project material
+Seven local tests cover score boundaries, winner lock/cancel/confirm, resets, name validation, serialized round trips, persistence recovery, corrupt-save preservation and widget interactions. The GitHub workflow in `.github/workflows/flutter.yml` runs analysis/tests/Web builds after it is pushed; no remote passing status is claimed.
 
-# Marcador de Truco
+Web build and Chrome preview were exercised locally. Android licenses are incomplete; no licenses were accepted. Android builds and physical devices were not validated. iOS simulator compilation was attempted: after correcting the minimum target to iOS 15 for Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
 
-Aplicativo para marcar os pontos no jogo de truco criado para disciplina de Programação Mobile.
+## Original lesson
 
-Tutorial de criação deste app: http://bit.ly/2MDO6ww
+[Creating a Truco scoreboard in Flutter (Portuguese)](https://medium.com/flutter-comunidade-br/criando-um-marcador-de-truco-em-flutter-e50669f21f03), by Kleber Andrade (2019), originally linked via http://bit.ly/2MDO6ww. The modernized code implements the lesson's boundary, restart, modal confirmation and rename exercises. See [prepared article revision](docs/medium-update.pt-BR.md) and [work log](docs/WORK_LOG.md).
 
-<p align="center">
-    <img src="https://miro.medium.com/max/1440/1*UhBQQqZamLVMRhYtkKnhpA.png" width="800"/>
-</p>
+## License
 
-## Como clonar e importar
-
--   Faça um fork do projeto
--   Abra o terminal do Visual Studio Code
--   Digite (troque kleberandrade pelo nome do seu usuários): git clone https://github.com/kleberandrade/marcador-truco-aulas-flutter.git marcador_truco
-
-## Desafios
-
-- Não deixar que seja possível ficar com pontos negativos ao clicar em (-1) e também não pode ultrapassar 12 pontos.
-- Permitir de alguma forma que a partida seja reiniciada, sem zerar o número de vitórias
-- Transformar o AlertDialog em modal para que somente desapareça da tela ao clicar em CANCEL ou OK. Uma dia, precisa utilizar o atributo barrierDismissible
-- Trocar os nomes dos usuários ao clicar em cima do nome (Text). Pode-se utilizar um GestureDetector e exibir um AlertDialog com um TextField. [Exemplo de AlertDialog com TextField](https://inducesmile.com/google-flutter/how-to-add-textfield-input-in-an-alert-dialog-in-flutter/).
-- Exibir uma notificação da mão de ferro: é a Mão de Onze especial, quando as duas duplas conseguem chegar a 11 pontos na partida. Todos os jogadores recebem as cartas “cobertas”, isto é, viradas para baixo, e deverão jogar assim. Quem vencer a mão, vence a partida
-- Instale o plugin [Screen](https://pub.dev/packages/screen#-readme-tab-) e adicione um código para deixar a tela sempre ativa enquanto joga.
-
-## Licença
-
-    Copyright 2019 Kleber de Oliveira Andrade
-    
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-    
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-    
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+[MIT](LICENSE), Copyright 2019 Kleber de Oliveira Andrade. Flutter and platform-generated resources retain their respective licenses. No third-party article text or artwork is bundled.
