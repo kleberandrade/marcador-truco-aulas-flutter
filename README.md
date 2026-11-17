@@ -2,15 +2,15 @@
 
 [![Flutter CI](https://github.com/kleberandrade/marcador-truco-aulas-flutter/actions/workflows/flutter.yml/badge.svg?branch=master)](https://github.com/kleberandrade/marcador-truco-aulas-flutter/actions/workflows/flutter.yml)
 
-![Flutter 3.41.9](https://img.shields.io/badge/Flutter-3.41.9-02569B)
-![Dart 3.11.5](https://img.shields.io/badge/Dart-3.11.5-0175C2)
+![Flutter 3.50.0](https://img.shields.io/badge/Flutter-3.50.0-02569B)
+![Dart 3.14.0](https://img.shields.io/badge/Dart-3.14.0-0175C2)
 [![MIT](https://img.shields.io/badge/license-MIT-555555)](LICENSE)
 
 An offline two-team scoreboard, originally created by Kleber de Oliveira Andrade for mobile programming classes. Portuguese interface, modern Flutter, no account or backend required.
 
 ## Run
 
-Verified with Flutter **3.41.9**, bundled Dart **3.11.5**, and Chrome on macOS. Do not use the original Dart 2 toolchain.
+Verified with Flutter **3.50.0**, bundled Dart **3.14.0**, and Chrome on macOS. Do not use the original Dart 2 toolchain.
 
 ```sh
 flutter pub get
@@ -36,7 +36,7 @@ Try a match locally: rename teams to Amigos/Visitantes, give them points, reload
 
 Original code stored everything in memory, so there are no persisted legacy records to migrate. New records use `truco.match.v1`, a single JSON snapshot with schema version 1. Unknown versions and malformed values are rejected without overwriting until a user explicitly saves/starts playing. Future schema changes must migrate this key and retain compatibility tests.
 
-Android and iOS scaffolds were regenerated from Flutter 3.41.9 templates, preserving the original `com.example.marcador_truco` application identity and launcher assets. These are classroom development identifiers; release signing is not configured. The MIT license and original authorship remain unchanged.
+Android build files follow Flutter 3.50.0 templates; the iOS scaffold was migrated from the original Flutter 3.41 modernization, preserving the original `com.example.marcador_truco` application identity and launcher assets. These are classroom development identifiers; release signing is not configured. The MIT license and original authorship remain unchanged.
 
 ## Verification
 
@@ -51,7 +51,7 @@ flutter test integration_test/scoreboard_test.dart -d YOUR_SIMULATOR_ID
 
 Seven local tests cover score boundaries, winner lock/cancel/confirm, resets, name validation, serialized round trips, persistence recovery, corrupt-save preservation and widget interactions. The published GitHub workflow in `.github/workflows/flutter.yml` runs analysis/tests/Web builds. Its live badge reflects GitHub status.
 
-Web build and Chrome preview were exercised locally. Android licenses are incomplete; no licenses were accepted. Android builds and physical devices were not validated. iOS simulator packaging and one native integration test passed on an iPhone 17 Pro / iOS 26.4.1. Xcode 27's lipo rejects Flutter's multi-architecture check; `ios/Flutter/Debug.xcconfig` selects arm64 for simulator Debug only. Explicit arm64 avoids arm64e reported by an Xcode host process. Intel Macs need x86_64 instead (unverified); device and Release architecture settings are unchanged. Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
+Web build and Chrome preview were exercised locally. Some Android licenses remain incomplete; the debug APK compiled without accepting new terms. Android debug APK compiled with the updated Gradle template; Android interaction and physical devices were not validated. iOS simulator packaging and one native integration test passed on an iPhone 17 Pro / iOS 26.4.1. Xcode 27's lipo rejects Flutter's multi-architecture check; `ios/Flutter/Debug.xcconfig` selects arm64 for simulator Debug only. Explicit arm64 avoids arm64e reported by an Xcode host process. Intel Macs need x86_64 instead (unverified); device and Release architecture settings are unchanged. Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
 
 ![Real Chrome preview](docs/preview-desktop.jpg)
 
@@ -63,4 +63,23 @@ Web build and Chrome preview were exercised locally. Android licenses are incomp
 
 [MIT](LICENSE), Copyright 2019 Kleber de Oliveira Andrade. Flutter and platform-generated resources retain their respective licenses. No third-party article text or artwork is bundled.
 
-The native integration test owns only the scoreboard key on a disposable test simulator. It exercises renaming, cancellation/confirmation of victory, reset preserving victories and reloading native storage. Direct packages were checked with `flutter pub outdated` and `flutter pub upgrade --major-versions`; newer transitives require constraints incompatible with this SDK and were not forced.
+The native integration test owns only the scoreboard key on a disposable test simulator. It exercises renaming, cancellation/confirmation of victory, reset preserving victories and reloading native storage. Packages were rechecked and updated with the new SDK; see the dependency maintenance section for the two tested SDK-pin overrides.
+
+## Keeping dependencies current
+
+App 2.1.0+3 uses Flutter 3.50.0 / Dart 3.14.0, pinned in `.fvmrc` and CI. Select this SDK before running the commands; `.fvmrc` alone does not change your shell. The system Flutter installation was not upgraded. Material imports now use `material_ui` 1.11.1. All packages, including transitives, match the latest versions reported by `flutter pub outdated` on 2026-11-17.
+
+Two exact overrides (`material_color_utilities` 0.13.1 and `test_api` 0.7.15) supersede SDK pins only after local analysis, seven tests, native integration, Web/iOS simulator/Android debug builds passed. Compare `flutter pub outdated --no-dependency-overrides` to inspect the upstream restrictions. Re-test the overrides at each SDK change; remove them once no longer needed. Keep the lockfile.
+
+```sh
+flutter pub outdated
+flutter pub upgrade --major-versions
+flutter analyze
+flutter test
+flutter build web --no-wasm-dry-run
+flutter build ios --simulator --debug
+flutter test integration_test/scoreboard_test.dart -d YOUR_SIMULATOR_ID
+flutter build apk --debug
+```
+
+The Flutter migrator added Swift Package Manager integration while retaining the customized CocoaPods setup. Both build and native integration passed; completing the CocoaPods removal remains separate work.
