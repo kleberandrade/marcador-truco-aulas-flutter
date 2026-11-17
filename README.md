@@ -57,7 +57,7 @@ Web build and Chrome preview were exercised locally. Android licenses are incomp
 
 ## Original lesson
 
-[Creating a Truco scoreboard in Flutter (Portuguese)](https://medium.com/flutter-comunidade-br/criando-um-marcador-de-truco-em-flutter-e50669f21f03), by Kleber Andrade (2019), originally linked via http://bit.ly/2MDO6ww. The modernized code implements the lesson's boundary, restart, modal confirmation and rename exercises. See [didactic article source](docs/medium-update.pt-BR.md) and [work log](docs/WORK_LOG.md).
+[Creating a Truco scoreboard in Flutter (Portuguese)](https://medium.com/flutter-comunidade-br/criando-um-marcador-de-truco-em-flutter-e50669f21f03), by Kleber Andrade (2019), originally linked via http://bit.ly/2MDO6ww. The modernized code implements the lesson's boundary, restart, modal confirmation and rename exercises. The updated lesson and new cover were published at the original URL, with real Web/iOS captures. See [didactic article source](docs/medium-update.pt-BR.md) and [work log](docs/WORK_LOG.md).
 
 ## License
 
