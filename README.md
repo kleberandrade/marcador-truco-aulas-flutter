@@ -45,18 +45,22 @@ dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test --coverage
 flutter build web --no-wasm-dry-run
+flutter build ios --simulator --debug
+flutter test integration_test/scoreboard_test.dart -d YOUR_SIMULATOR_ID
 ```
 
 Seven local tests cover score boundaries, winner lock/cancel/confirm, resets, name validation, serialized round trips, persistence recovery, corrupt-save preservation and widget interactions. The published GitHub workflow in `.github/workflows/flutter.yml` runs analysis/tests/Web builds. Its live badge reflects GitHub status.
 
-Web build and Chrome preview were exercised locally. Android licenses are incomplete; no licenses were accepted. Android builds and physical devices were not validated. iOS simulator compilation was attempted: after correcting the minimum target to iOS 15 for Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
+Web build and Chrome preview were exercised locally. Android licenses are incomplete; no licenses were accepted. Android builds and physical devices were not validated. iOS simulator packaging and one native integration test passed on an iPhone 17 Pro / iOS 26.4.1. Xcode 27's lipo rejects Flutter's multi-architecture check; `ios/Flutter/Debug.xcconfig` selects arm64 for simulator Debug only. Explicit arm64 avoids arm64e reported by an Xcode host process. Intel Macs need x86_64 instead (unverified); device and Release architecture settings are unchanged. Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
 
 ![Real Chrome preview](docs/preview-desktop.jpg)
 
 ## Original lesson
 
-[Creating a Truco scoreboard in Flutter (Portuguese)](https://medium.com/flutter-comunidade-br/criando-um-marcador-de-truco-em-flutter-e50669f21f03), by Kleber Andrade (2019), originally linked via http://bit.ly/2MDO6ww. The modernized code implements the lesson's boundary, restart, modal confirmation and rename exercises. See [prepared article revision](docs/medium-update.pt-BR.md) and [work log](docs/WORK_LOG.md).
+[Creating a Truco scoreboard in Flutter (Portuguese)](https://medium.com/flutter-comunidade-br/criando-um-marcador-de-truco-em-flutter-e50669f21f03), by Kleber Andrade (2019), originally linked via http://bit.ly/2MDO6ww. The modernized code implements the lesson's boundary, restart, modal confirmation and rename exercises. See [didactic article source](docs/medium-update.pt-BR.md) and [work log](docs/WORK_LOG.md).
 
 ## License
 
 [MIT](LICENSE), Copyright 2019 Kleber de Oliveira Andrade. Flutter and platform-generated resources retain their respective licenses. No third-party article text or artwork is bundled.
+
+The native integration test owns only the scoreboard key on a disposable test simulator. It exercises renaming, cancellation/confirmation of victory, reset preserving victories and reloading native storage. Direct packages were checked with `flutter pub outdated` and `flutter pub upgrade --major-versions`; newer transitives require constraints incompatible with this SDK and were not forced.

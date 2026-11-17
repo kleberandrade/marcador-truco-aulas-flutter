@@ -18,3 +18,11 @@
 
 - Published ordered commits f444734 (toolchain/platform), efca5d2 (domain/persistence/visual/tests), 689d04a (docs/CI) to origin/master after explicit push authorization. Checked remote default branch, no protection enabled, no force push.
 - Final extracted-widget source: analyzer clean, seven tests passed, release Web build passed (213.7s). First GitHub run 44083367197 passed dependency/format/analyze/test stages; build status tracked separately.
+
+## iOS follow-up and Medium lesson revision
+
+- Reproduced the architecture failure: upstream Flutter issue https://github.com/flutter/flutter/issues/188461 identifies Xcode 27 lipo rejecting multi-arch verify. Added project-scoped simulator Debug arm64, with no shared Flutter SDK edits. Using NATIVE_ARCH_ACTUAL first built generically but failed a concrete destination because Xcode host can report arm64e; explicit simulator-supported arm64 fixed that root cause. Intel simulator Debug needs x86_64 and remains unverified.
+- Built Runner.app successfully, installed/launched on iPhone 17 Pro / iOS 26.4.1 with simctl. This Xcode installation contains no Simulator.app GUI; native integration tests drive the real simulator app, and simctl screenshots provide visual evidence.
+- Added integration_test from the Flutter SDK and a native end-to-end test using real SharedPreferences, covering rename, 12-point win cancel/confirm, reset preserving wins and reconstructed-screen recovery. Native integration passed; analyzer clean; seven local tests passed.
+- Checked pub outdated and pub upgrade --major-versions. Direct dependencies already latest compatible; raised shared_preferences manifest minimum to resolved 2.5.6. No incompatible overrides or global SDK changes.
+- The project's IAB Medium tab now has an authenticated author session and Edit story access. Read original content and preserved a temporary reference before replacing outdated sections with a step-by-step Portuguese lesson, real images and new cover. Publication verification recorded below when complete.
