@@ -1,2 +1,6 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
 #include "Generated.xcconfig"
+// Xcode 27 lipo rejects Flutter's multi-architecture verification.
+// Apple Silicon simulator Debug only; device and Release builds stay unchanged.
+// Explicit arm64 also avoids arm64e from Xcode's NATIVE_ARCH_ACTUAL.
+ARCHS[sdk=iphonesimulator*] = arm64
