@@ -172,13 +172,11 @@ flutter test integration_test/scoreboard_test.dart -d IDENTIFICADOR_DO_SIMULADOR
 
 ## 10. Executando no simulador iOS
 
-No macOS, configure o Xcode e inicialize um simulador. O projeto usa iOS mínimo 15. No ambiente desta atualização, Xcode 27.2 e Flutter 3.50.0 expuseram uma incompatibilidade na verificação de múltiplas arquiteturas feita por lipo. A configuração Debug.xcconfig limita somente o build Debug do simulador à arquitetura arm64 dos Macs Apple Silicon:
+No macOS, configure o Xcode e inicialize um simulador. O projeto usa iOS mínimo 15. Na etapa anterior, com Flutter 3.41.9 e Xcode 27.2, uma verificação lipo com várias arquiteturas falhava; foi necessário restringir temporariamente o simulador a arm64. Ao atualizar para Flutter 3.50.0, conferimos que o próprio SDK verifica cada arquitetura separadamente. Removemos a restrição e repetimos o build e o teste integrado com sucesso.
 
-```text
-ARCHS[sdk=iphonesimulator*] = arm64
-```
+Esta é uma lição de manutenção: um workaround deve ter motivo, escopo e condição de remoção. Não copie a antiga linha ARCHS para esta versão. Debug.xcconfig volta a incluir apenas as configurações do CocoaPods e do Flutter; não altera a seleção de arquiteturas padrão do simulador. Isso também remove a restrição anterior a Macs Apple Silicon, embora o teste de execução desta aula tenha sido feito em arm64. Não validamos um Mac Intel.
 
-Isso evita a chamada problemática com duas arquiteturas, sem modificar o SDK global e sem alterar os builds de dispositivo ou Release. Usamos arm64 explicitamente porque o Xcode iniciado como arm64e pode informar uma arquitetura nativa que o simulador não aceita. Em Macs Intel, adapte essa configuração Debug para x86_64; essa combinação não foi validada aqui. A configuração é local ao projeto e deve ser reavaliada quando o Flutter incorporar a correção. O empacotamento e o fluxo integrado no simulador foram verificados novamente com as dependências atualizadas; isso não equivale a validar um aparelho físico ou uma publicação na App Store.
+O empacotamento e o fluxo integrado foram verificados no iPhone 17 Pro / iOS 26.4.1, com as dependências atualizadas. Esse resultado não equivale a validar um telefone físico ou uma publicação na App Store.
 
 ```sh
 flutter build ios --simulator --debug
