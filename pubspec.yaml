@@ -1,12 +1,14 @@
 name: marcador_truco
 description: Accessible offline Truco scoreboard for two teams.
-version: 2.0.0+2
+version: 2.1.0+3
 publish_to: none
 environment:
-  sdk: '>=3.11.0 <4.0.0'
+  sdk: '>=3.14.0 <4.0.0'
+  flutter: '>=3.50.0'
 dependencies:
   flutter:
     sdk: flutter
+  material_ui: ^1.11.1
   shared_preferences: ^2.5.6
 dev_dependencies:
   integration_test:
@@ -16,3 +18,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 flutter:
   uses-material-design: true
+# SDK-pinned packages, validated on Flutter 3.50.0 / Dart 3.14.0.
+# Re-test on every SDK upgrade and remove when upstream constraints permit.
+dependency_overrides:
+  material_color_utilities: 0.13.1
+  test_api: 0.7.15

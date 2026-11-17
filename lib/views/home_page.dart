@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import '../domain/match.dart';
 import '../data/match_store.dart';
 import '../widgets/team_board.dart';
@@ -20,8 +21,7 @@ class _HomePageState extends State<HomePage> {
     try {
       game = widget.store.load();
     } catch (_) {
-      error =
-          'O placar salvo está inválido. Nada foi sobrescrito. Inicie uma nova partida para continuar.';
+      error = 'O placar salvo está inválido. Nada foi sobrescrito. Inicie uma nova partida para continuar.';
     }
     if (game.winner != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => finish());
@@ -37,8 +37,7 @@ class _HomePageState extends State<HomePage> {
     try {
       await widget.store.save(next);
     } catch (_) {
-      error =
-          'Falha ao salvar. O placar está apenas nesta sessão. Tente salvar novamente.';
+      error = 'Falha ao salvar. O placar está apenas nesta sessão. Tente salvar novamente.';
     }
     if (mounted) setState(() => saving = false);
   }

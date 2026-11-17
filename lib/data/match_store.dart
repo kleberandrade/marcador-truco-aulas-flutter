@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../domain/match.dart';
 
 class MatchStore {

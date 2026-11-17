@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:marcador_truco/data/match_store.dart';
@@ -57,9 +57,8 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(1.5)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(1.5)),
           child: child!,
         ),
         home: HomePage(store: store),
