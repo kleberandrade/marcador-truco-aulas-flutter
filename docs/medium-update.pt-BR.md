@@ -16,7 +16,7 @@ flutter pub get
 flutter run -d chrome
 ```
 
-A atualização está em commits locais até a revisão e envio pelo autor; os comandos de clone usarão o código antigo enquanto esses commits não forem enviados. No VS Code, escolha Chrome para executar a aplicação. Android exige licenças e configuração de SDK próprias; iOS exige Xcode. Esta revisão foi executada na Web, sem alegação de teste em celular.
+A atualização do aplicativo foi enviada à branch master do repositório. No VS Code, escolha Chrome para executar a aplicação. Android exige licenças e configuração de SDK próprias; iOS exige Xcode. Esta revisão foi executada na Web, sem alegação de teste em celular.
 
 ## Estrutura do projeto
 

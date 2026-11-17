@@ -1,5 +1,7 @@
 # Mesa de Truco · Truco Scoreboard
 
+[![Flutter CI](https://github.com/kleberandrade/marcador-truco-aulas-flutter/actions/workflows/flutter.yml/badge.svg?branch=master)](https://github.com/kleberandrade/marcador-truco-aulas-flutter/actions/workflows/flutter.yml)
+
 ![Flutter 3.41.9](https://img.shields.io/badge/Flutter-3.41.9-02569B)
 ![Dart 3.11.5](https://img.shields.io/badge/Dart-3.11.5-0175C2)
 [![MIT](https://img.shields.io/badge/license-MIT-555555)](LICENSE)
@@ -45,9 +47,11 @@ flutter test --coverage
 flutter build web --no-wasm-dry-run
 ```
 
-Seven local tests cover score boundaries, winner lock/cancel/confirm, resets, name validation, serialized round trips, persistence recovery, corrupt-save preservation and widget interactions. The GitHub workflow in `.github/workflows/flutter.yml` runs analysis/tests/Web builds after it is pushed; no remote passing status is claimed.
+Seven local tests cover score boundaries, winner lock/cancel/confirm, resets, name validation, serialized round trips, persistence recovery, corrupt-save preservation and widget interactions. The published GitHub workflow in `.github/workflows/flutter.yml` runs analysis/tests/Web builds. Its live badge reflects GitHub status.
 
 Web build and Chrome preview were exercised locally. Android licenses are incomplete; no licenses were accepted. Android builds and physical devices were not validated. iOS simulator compilation was attempted: after correcting the minimum target to iOS 15 for Xcode 27.2, Flutter failed to package its simulator engine with an architecture check despite lipo listing both architectures. This is an unresolved local toolchain limitation, not a successful native build. Xcode 27.2 and Android SDK 36.1.0 were detected. `crapper`, `dryer`, and `mutator` are installed but their supported language lists exclude Dart; no CRAP, duplication or mutation score is claimed.
+
+![Real Chrome preview](docs/preview-desktop.jpg)
 
 ## Original lesson
 

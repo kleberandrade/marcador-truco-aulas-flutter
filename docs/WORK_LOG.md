@@ -15,3 +15,6 @@
 - Final local checks: analyzer clean; seven tests passed including 390px layout with 150% text. Chrome scoring + reload recovery verified; desktop screenshot recorded. Browser viewport override did not resize the preview, so narrow layout validation is widget-based only.
 - Web release build passed with --no-wasm-dry-run. The experimental Wasm probe stalled amid concurrent local builds; only this project's probe was stopped, then the JavaScript build completed. No Wasm support claimed.
 - iOS simulator attempt first exposed minimum target 13 incompatibility with Xcode 27.2; raised app/pods minimum to 15. Retry failed in Flutter debug_unpack_ios architecture checking (expected arm64 x86_64 although lipo lists both). Native build remains unverified.
+
+- Published ordered commits f444734 (toolchain/platform), efca5d2 (domain/persistence/visual/tests), 689d04a (docs/CI) to origin/master after explicit push authorization. Checked remote default branch, no protection enabled, no force push.
+- Final extracted-widget source: analyzer clean, seven tests passed, release Web build passed (213.7s). First GitHub run 44083367197 passed dependency/format/analyze/test stages; build status tracked separately.
